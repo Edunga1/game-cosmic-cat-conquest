@@ -1,0 +1,11 @@
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Parcel cache and output files
+.parcel-cache/
+dist/
+*.log
+
+# Node.js files
+node_modules/
