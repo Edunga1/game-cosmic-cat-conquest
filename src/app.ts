@@ -1,4 +1,4 @@
-import Game from "./game/game"
+import Game from "./game/Game"
 
 class App {
   canvas: HTMLCanvasElement
@@ -16,6 +16,7 @@ class App {
   start() {
     document.body.appendChild(this.canvas)
     window.addEventListener("resize", this.resize.bind(this))
+    this.registerCanvasEvents()
     this.resize()
     this.animate()
   }
@@ -33,6 +34,31 @@ class App {
     this.canvas.height = this.height
 
     this.game.resize(this.width, this.height)
+  }
+
+  private registerCanvasEvents() {
+    this.canvas.addEventListener("mousedown", this.onMouseDown.bind(this))
+    this.canvas.addEventListener("mousemove", this.onMouseMove.bind(this))
+    this.canvas.addEventListener("mouseup", this.onTouchEnd.bind(this))
+    this.canvas.addEventListener("touchstart", this.onTouchStart.bind(this))
+    this.canvas.addEventListener("touchend", this.onTouchEnd.bind(this))
+  }
+
+  private onMouseDown(event: MouseEvent) {
+    this.game.movePlayer(event.clientX, event.clientY)
+  }
+
+  private onMouseMove(event: MouseEvent) {
+    if (event.buttons === 0) return
+    this.game.movePlayer(event.clientX, event.clientY)
+  }
+
+  private onTouchStart(event: TouchEvent) {
+    this.game.movePlayer(event.touches[0].clientX, event.touches[0].clientY)
+  }
+
+  private onTouchEnd() {
+    this.game.stopPlayer()
   }
 }
 
