@@ -1,4 +1,4 @@
-import Point from "./core/point"
+import Point from "./core/Point"
 import Mobile from "./mobile/Mobile"
 import Space from "./space/Space"
 
