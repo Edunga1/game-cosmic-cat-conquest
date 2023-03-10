@@ -1,39 +1,60 @@
+import Point from "../core/Point"
+
 export default class Space {
     width: number
     height: number
-    lastTime: number
+    starElapsed = 0
     backgroundColor = "rgb(10, 10, 10)"
     starColorRange = 100
+    stars: Point[] = []
+    maxStars = 400
 
     constructor(
         private context: CanvasRenderingContext2D
     ) {
     }
 
-    animate(time: number) {
-        this.render(time)
+    animate(delta: number) {
+        this.render(delta)
     }
 
-    private render(time: number) {
-        // throttle rendering to 5 fps
-        if (time - this.lastTime < 1000 / 5) {
-            return
-        }
-        this.lastTime = time
+    private render(delta: number) {
+        this.renderBackground()
+        this.renderStars()
 
-        // Render background
+        if (this.checkStarElapsed(delta)) {
+            this.updateStars()
+        }
+    }
+
+    private renderBackground() {
         this.context.fillStyle = this.backgroundColor
         this.context.fillRect(0, 0, this.width, this.height)
+    }
 
-        // Render stars
+    private renderStars() {
         this.context.fillStyle = "white"
-        for (let i = 0; i < 100; i++) {
-            this.context.fillRect(
+        this.stars.forEach(star => {
+            this.context.fillRect(star.x, star.y, 1, 1)
+        })
+    }
+
+    private updateStars() {
+        this.stars = []
+        for (let i = 0; i < this.maxStars; i++) {
+            this.stars.push(new Point(
                 Math.random() * this.width,
                 Math.random() * this.height,
-                1,
-                1
-            )
+            ))
         }
+    }
+
+    private checkStarElapsed(delta: number) {
+        this.starElapsed += delta
+        if (this.starElapsed > 200) {
+            this.starElapsed = 0
+            return true
+        }
+        return false
     }
 }

@@ -5,6 +5,8 @@ import Space from "./space/Space"
 export default class Game {
   width = 0
   height = 0
+  lastTime = 0
+  delta = 0
   space: Space
   player: Mobile
   enemies: Mobile[] = []
@@ -21,6 +23,8 @@ export default class Game {
       enemy.position.y = Math.random() * 1000 - 500
       this.enemies.push(enemy)
     }
+    console.log(this.player.position)
+    console.log(this.enemies[0].position)
   }
 
   resize(width: number, height: number) {
@@ -31,22 +35,10 @@ export default class Game {
   }
 
   animate(time: number) {
-    this.space.animate(time)
-
-    // render mobiles relative to player
-    this.context.save()
-    // player
-    this.context.translate(this.width / 2, this.height / 2)
-    this.player.animate(time)
-
-    // enemies
-    this.enemies.forEach(enemy => {
-      this.context.translate(
-        this.player.position.x + enemy.position.x,
-        this.player.position.y + enemy.position.y,
-      )
-      enemy.animate(time)
-    })
+    this.updateDelta(time)
+    this.space.animate(this.delta)
+    this.updatePlayer()
+    this.updateEnemies()
     this.context.restore()
   }
 
@@ -54,10 +46,34 @@ export default class Game {
     const point = new Point(x, y)
     const center = new Point(this.width / 2, this.height / 2)
     const distance = center.subtract(point).unit()
-    this.player.position = this.player.position.add(distance)
+    this.player.velocity = distance
   }
 
   stopPlayer() {
-    console.log("stop")
+    this.player.velocity = Point.zero()
+  }
+
+  private updatePlayer() {
+    this.context.save()
+    this.context.translate(this.width / 2, this.height / 2)
+    this.player.animate(this.delta)
+    this.context.restore()
+  }
+
+  private updateEnemies() {
+    this.enemies.forEach(enemy => {
+      this.context.save()
+      this.context.translate(
+        this.width / 2 + this.player.position.x + enemy.position.x,
+        this.height / 2 + this.player.position.y + enemy.position.y,
+      )
+      enemy.animate(this.delta)
+      this.context.restore()
+    })
+  }
+
+  private updateDelta(time: number) {
+    this.delta = time - this.lastTime
+    this.lastTime = time
   }
 }
