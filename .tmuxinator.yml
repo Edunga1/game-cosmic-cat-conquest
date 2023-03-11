@@ -1,0 +1,6 @@
+project_name: ccc
+
+windows:
+  - editor: vi
+  - cli:
+  - server: npm run develop
