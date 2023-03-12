@@ -45,8 +45,8 @@ export default class Game {
   movePlayer(x: number, y: number) {
     const point = new Point(x, y)
     const center = new Point(this.width / 2, this.height / 2)
-    const distance = center.subtract(point).unit()
-    this.player.velocity = distance
+    const distance = center.subtract(point)
+    this.player.move(distance)
   }
 
   stopPlayer() {

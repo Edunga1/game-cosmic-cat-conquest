@@ -1,3 +1,5 @@
+import Point from "../core/Point"
+
 export default class Sprite {
   frameIndex = 0
   time = 0
@@ -31,21 +33,35 @@ export default class Sprite {
     ctx: CanvasRenderingContext2D,
     x: number,
     y: number,
+    direction: Point = Point.zero(),
   ) {
     if (!this.imageLoaded) return
 
     const row = Math.floor(this.frameIndex / this.framesPerRow)
     const col = this.frameIndex % this.framesPerRow
+    let angle = direction.angle()
+
+    ctx.save()
+
+    // Flip the sprite if the direction is left
+    if (direction.x < 0) {
+      ctx.scale(-1, 1)
+      angle = Math.PI - angle
+    }
+
+    ctx.rotate(angle)
     ctx.drawImage(
       this.image,
       col * this.frameWidth,
       row * this.frameHeight,
       this.frameWidth,
       this.frameHeight,
-      x,
-      y,
+      x - this.frameWidth / 2,
+      y - this.frameHeight / 2,
       this.frameWidth,
       this.frameHeight
     )
+
+    ctx.restore()
   }
 }

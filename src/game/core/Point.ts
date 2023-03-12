@@ -31,5 +31,9 @@ export default class Point {
     multiply(scalar: number) {
         return new Point(this.x * scalar, this.y * scalar)
     }
+
+    angle() {
+        return Math.atan2(this.y, this.x)
+    }
 }
 

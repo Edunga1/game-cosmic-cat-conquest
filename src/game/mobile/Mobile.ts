@@ -3,6 +3,7 @@ import Point from "../core/Point"
 export default abstract class Mobile {
     position = Point.zero()
     velocity = Point.zero()
+    direction = new Point(0, 0)
     elapsed = 0
 
     constructor(
@@ -13,6 +14,11 @@ export default abstract class Mobile {
     animate(delta: number) {
         this.update(delta)
         this.render(delta)
+    }
+
+    move(distance: Point) {
+        this.velocity = distance.unit()
+        this.direction = distance
     }
 
     private update(delta: number) {

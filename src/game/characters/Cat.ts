@@ -18,6 +18,6 @@ export default class Cat extends Mobile {
 
   render(delta: number) {
     this.sprite.update(delta)
-    this.sprite.draw(this.context, 0, 0)
+    this.sprite.draw(this.context, 0, 0, this.direction)
   }
 }
