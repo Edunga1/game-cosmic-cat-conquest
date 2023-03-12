@@ -50,7 +50,7 @@ export default class Game {
   }
 
   stopPlayer() {
-    this.player.velocity = Point.zero()
+    this.player.stop()
   }
 
   private updatePlayer() {

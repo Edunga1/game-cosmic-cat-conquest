@@ -21,6 +21,10 @@ export default abstract class Mobile {
     this.direction = distance
   }
 
+  stop() {
+    this.velocity = Point.zero()
+  }
+
   private update(delta: number) {
     this.elapsed += delta
     this.position = this.position.add(this.velocity.multiply(delta / 5))
