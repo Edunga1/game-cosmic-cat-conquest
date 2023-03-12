@@ -10,7 +10,7 @@ export default class Game {
   lastTime = 0
   delta = 0
   space: Space
-  player: Cat
+  player: Mobile
   enemies: Mobile[] = []
 
   constructor(

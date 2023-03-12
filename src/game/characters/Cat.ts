@@ -2,7 +2,6 @@ import Mobile from "../mobile/Mobile"
 import Sprite from "../sprite/Sprite"
 import CatSprite from "../../../assets/images/cat-sprites-running.png"
 
-
 export default class Cat extends Mobile {
   sprite: Sprite
 
