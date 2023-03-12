@@ -1,3 +1,5 @@
+import Cat from "./characters/Cat"
+import CirclingTriangle from "./characters/CirclingTriangle"
 import Point from "./core/Point"
 import Mobile from "./mobile/Mobile"
 import Space from "./space/Space"
@@ -8,23 +10,21 @@ export default class Game {
   lastTime = 0
   delta = 0
   space: Space
-  player: Mobile
+  player: Cat
   enemies: Mobile[] = []
 
   constructor(
     private context: CanvasRenderingContext2D,
   ) {
     this.space = new Space(context)
-    this.player = new Mobile(context)
+    this.player = new Cat(context)
 
     for (let i = 0; i < 10; i++) {
-      const enemy = new Mobile(context)
+      const enemy = new CirclingTriangle(context)
       enemy.position.x = Math.random() * 1000 - 500
       enemy.position.y = Math.random() * 1000 - 500
       this.enemies.push(enemy)
     }
-    console.log(this.player.position)
-    console.log(this.enemies[0].position)
   }
 
   resize(width: number, height: number) {
