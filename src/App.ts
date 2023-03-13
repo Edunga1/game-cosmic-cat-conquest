@@ -43,6 +43,7 @@ export class App {
         this.canvas.addEventListener("mousemove", this.onMouseMove.bind(this))
         this.canvas.addEventListener("mouseup", this.onTouchEnd.bind(this))
         this.canvas.addEventListener("touchstart", this.onTouchStart.bind(this))
+        this.canvas.addEventListener("touchmove", this.onTouchStart.bind(this))
         this.canvas.addEventListener("touchend", this.onTouchEnd.bind(this))
         document.addEventListener("keydown", this.onKeyDown.bind(this))
         document.addEventListener("keyup", this.onKeyUp.bind(this))
