@@ -4,7 +4,7 @@ export default abstract class Mobile {
   position = Point.zero()
   velocity = Point.zero()
   direction = new Point(0, 0)
-  elapsed = 0
+  lifetime = 0
 
   constructor(
     protected context: CanvasRenderingContext2D
@@ -26,7 +26,7 @@ export default abstract class Mobile {
   }
 
   private update(delta: number) {
-    this.elapsed += delta
+    this.lifetime += delta
     this.position = this.position.add(this.velocity.multiply(delta / 5))
   }
 

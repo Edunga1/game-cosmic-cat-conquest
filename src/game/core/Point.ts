@@ -21,6 +21,9 @@ export default class Point {
 
     unit() {
         const length = this.length()
+        if (length === 0) {
+            return Point.zero()
+        }
         return new Point(this.x / length, this.y / length)
     }
 

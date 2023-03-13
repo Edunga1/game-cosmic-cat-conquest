@@ -6,6 +6,7 @@ export class App {
     game: Game
     width: number
     height: number
+    keys: string[] = []
 
     constructor() {
         this.canvas = document.createElement("canvas")
@@ -42,6 +43,8 @@ export class App {
         this.canvas.addEventListener("mouseup", this.onTouchEnd.bind(this))
         this.canvas.addEventListener("touchstart", this.onTouchStart.bind(this))
         this.canvas.addEventListener("touchend", this.onTouchEnd.bind(this))
+        document.addEventListener("keydown", this.onKeyDown.bind(this))
+        document.addEventListener("keyup", this.onKeyUp.bind(this))
     }
 
     private onMouseDown(event: MouseEvent) {
@@ -60,6 +63,47 @@ export class App {
 
     private onTouchEnd() {
         this.game.stopPlayer()
+    }
+
+    private onKeyDown(event: KeyboardEvent) {
+        if (!(event.key in App.KEY_TO_DIRECTION)) {
+            return
+        }
+        if (this.keys.includes(event.key)) {
+            return
+        }
+        this.keys.push(event.key)
+        this.updateKeys()
+    }
+
+    private onKeyUp(event: KeyboardEvent) {
+        if (!(event.key in App.KEY_TO_DIRECTION)) {
+            return
+        }
+        this.keys = this.keys.filter(key => key !== event.key)
+        this.updateKeys()
+    }
+
+    private updateKeys() {
+        if (this.keys.length === 0) {
+            this.game.stopPlayer()
+            return
+        }
+        const sum = this.keys.reduce((sum, key) => {
+            return [sum[0] + App.KEY_TO_DIRECTION[key][0], sum[1] + App.KEY_TO_DIRECTION[key][1]]
+        }, [0, 0])
+        this.game.movePlayerDirection(sum[0], sum[1])
+    }
+
+    static KEY_TO_DIRECTION: { [key: string]: [number, number] } = {
+        "w": [0, -1],
+        "a": [-1, 0],
+        "s": [0, 1],
+        "d": [1, 0],
+        "ArrowUp": [0, -1],
+        "ArrowLeft": [-1, 0],
+        "ArrowDown": [0, 1],
+        "ArrowRight": [1, 0],
     }
 }
 

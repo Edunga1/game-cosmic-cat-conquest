@@ -49,6 +49,10 @@ export default class Game {
     this.player.move(distance)
   }
 
+  movePlayerDirection(x: number, y: number) {
+    this.player.move(new Point(x, y))
+  }
+
   stopPlayer() {
     this.player.stop()
   }
