@@ -12,7 +12,7 @@ export default class CirclingTriangle extends Mobile {
 
   render() {
     this.context.save()
-    this.context.rotate(this.elapsed / 1000)
+    this.context.rotate(this.lifetime / 1000)
     this.context.beginPath()
     this.context.moveTo(0, -5)
     this.context.lineTo(5, 5)

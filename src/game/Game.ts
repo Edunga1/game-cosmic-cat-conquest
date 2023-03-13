@@ -68,8 +68,8 @@ export default class Game {
     this.enemies.forEach(enemy => {
       this.context.save()
       this.context.translate(
-        this.width / 2 + this.player.position.x + enemy.position.x,
-        this.height / 2 + this.player.position.y + enemy.position.y,
+        this.width / 2 - this.player.position.x - enemy.position.x,
+        this.height / 2 - this.player.position.y - enemy.position.y,
       )
       enemy.animate(this.delta)
       this.context.restore()

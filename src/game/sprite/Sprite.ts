@@ -39,17 +39,11 @@ export default class Sprite {
 
     const row = Math.floor(this.frameIndex / this.framesPerRow)
     const col = this.frameIndex % this.framesPerRow
-    let angle = direction.angle()
+    // sprite is facing left by default
+    const flip = direction.x < 0 ? 1 : -1
 
     ctx.save()
-
-    // Flip the sprite if the direction is left
-    if (direction.x < 0) {
-      ctx.scale(-1, 1)
-      angle = Math.PI - angle
-    }
-
-    ctx.rotate(angle)
+    ctx.scale(flip, 1)
     ctx.drawImage(
       this.image,
       col * this.frameWidth,
@@ -61,7 +55,6 @@ export default class Sprite {
       this.frameWidth,
       this.frameHeight
     )
-
     ctx.restore()
   }
 }
