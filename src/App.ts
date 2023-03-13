@@ -1,3 +1,4 @@
+import Point from "./game/core/Point"
 import Game from "./game/Game"
 
 export class App {
@@ -48,21 +49,34 @@ export class App {
     }
 
     private onMouseDown(event: MouseEvent) {
-        this.game.movePlayer(event.clientX, event.clientY)
+        this.game.movePlayerDirection(
+            ...this.calculateDirection(event.clientX, event.clientY)
+        )
     }
 
     private onMouseMove(event: MouseEvent) {
         if (event.buttons === 0)
             return
-        this.game.movePlayer(event.clientX, event.clientY)
+        this.game.movePlayerDirection(
+            ...this.calculateDirection(event.clientX, event.clientY)
+        )
     }
 
     private onTouchStart(event: TouchEvent) {
-        this.game.movePlayer(event.touches[0].clientX, event.touches[0].clientY)
+        this.game.movePlayerDirection(
+            ...this.calculateDirection(event.touches[0].clientX, event.touches[0].clientY)
+        )
     }
 
     private onTouchEnd() {
         this.game.stopPlayer()
+    }
+
+    private calculateDirection(x: number, y: number): [number, number] {
+        const center = new Point(this.width / 2, this.height / 2)
+        const point = new Point(x, y)
+        const distance = point.subtract(center)
+        return [distance.x, distance.y]
     }
 
     private onKeyDown(event: KeyboardEvent) {
