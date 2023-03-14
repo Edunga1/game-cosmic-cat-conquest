@@ -12,8 +12,8 @@ export default class Game {
   delta = 0
   space: Space
   player: Mobile
-  targetPoint: Mobile
-  enemies: Mobile[] = []
+  targetPoint: TargetPoint
+  mobiles: Mobile[] = []
 
   constructor(
     private context: CanvasRenderingContext2D,
@@ -21,12 +21,13 @@ export default class Game {
     this.space = new Space(context)
     this.player = new Cat(context)
     this.targetPoint = new TargetPoint(context, this.player)
+    this.mobiles.push(this.targetPoint)
 
     for (let i = 0; i < 10; i++) {
       const enemy = new CirclingTriangle(context)
       enemy.position.x = Math.random() * 1000 - 500
       enemy.position.y = Math.random() * 1000 - 500
-      this.enemies.push(enemy)
+      this.mobiles.push(enemy)
     }
   }
 
@@ -41,8 +42,7 @@ export default class Game {
     this.updateDelta(time)
     this.space.animate(this.delta)
     this.updatePlayer()
-    this.updateEnemies()
-    this.updateTargetPoint()
+    this.updateNonPlayerMobiles()
     this.context.restore()
   }
 
@@ -50,10 +50,12 @@ export default class Game {
     const distance = new Point(x, y)
     this.player.move(distance)
     this.targetPoint.moveTo(this.player.position.add(distance))
+    this.targetPoint.setVisible(true)
   }
 
   stopPlayer() {
     this.player.stop()
+    this.targetPoint.setVisible(false)
   }
 
   private updatePlayer() {
@@ -63,8 +65,8 @@ export default class Game {
     this.context.restore()
   }
 
-  private updateEnemies() {
-    this.enemies.forEach(enemy => {
+  private updateNonPlayerMobiles() {
+    this.mobiles.forEach(enemy => {
       this.context.save()
       this.context.translate(
         this.width / 2 - this.player.position.x + enemy.position.x,
@@ -73,16 +75,6 @@ export default class Game {
       enemy.animate(this.delta)
       this.context.restore()
     })
-  }
-
-  private updateTargetPoint() {
-    this.context.save()
-    this.context.translate(
-      this.width / 2 - this.player.position.x + this.targetPoint.position.x,
-      this.height / 2 - this.player.position.y + this.targetPoint.position.y,
-    )
-    this.targetPoint.animate(this.delta)
-    this.context.restore()
   }
 
   private updateDelta(time: number) {

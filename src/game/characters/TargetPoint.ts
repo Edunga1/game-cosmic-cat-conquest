@@ -2,6 +2,8 @@ import Point from "../core/Point"
 import Mobile from "../mobile/Mobile"
 
 export default class TargetPoint extends Mobile {
+  private visible = true
+
   constructor(
     context: CanvasRenderingContext2D,
     private source: Mobile,
@@ -9,7 +11,14 @@ export default class TargetPoint extends Mobile {
     super(context)
   }
 
+  setVisible(visible: boolean) {
+    this.visible = visible
+  }
+
   render() {
+    if (!this.visible) {
+      return
+    }
     const dist = this.source.position.subtract(this.position)
     this.context.beginPath()
     this.context.moveTo(0, 0)
@@ -21,6 +30,5 @@ export default class TargetPoint extends Mobile {
 
   moveTo(position: Point) {
     super.moveTo(position)
-    console.log(this.position, this.source.position)
   }
 }
