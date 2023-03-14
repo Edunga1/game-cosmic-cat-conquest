@@ -50,22 +50,22 @@ export class App {
   }
 
   private onMouseDown(event: MouseEvent) {
-    this.game.movePlayerDirection(
-      ...this.calculateDirection(event.clientX, event.clientY)
+    this.game.movePlayer(
+      ...this.calculateDistanceFromCenter(event.clientX, event.clientY)
     )
   }
 
   private onMouseMove(event: MouseEvent) {
     if (event.buttons === 0)
       return
-    this.game.movePlayerDirection(
-      ...this.calculateDirection(event.clientX, event.clientY)
+    this.game.movePlayer(
+      ...this.calculateDistanceFromCenter(event.clientX, event.clientY)
     )
   }
 
   private onTouchStart(event: TouchEvent) {
-    this.game.movePlayerDirection(
-      ...this.calculateDirection(event.touches[0].clientX, event.touches[0].clientY)
+    this.game.movePlayer(
+      ...this.calculateDistanceFromCenter(event.touches[0].clientX, event.touches[0].clientY)
     )
   }
 
@@ -73,7 +73,7 @@ export class App {
     this.game.stopPlayer()
   }
 
-  private calculateDirection(x: number, y: number): [number, number] {
+  private calculateDistanceFromCenter(x: number, y: number): [number, number] {
     const center = new Point(this.width / 2, this.height / 2)
     const point = new Point(x, y)
     const distance = point.subtract(center)
@@ -107,7 +107,7 @@ export class App {
     const sum = this.keys.reduce((sum, key) => {
       return [sum[0] + App.KEY_TO_DIRECTION[key][0], sum[1] + App.KEY_TO_DIRECTION[key][1]]
     }, [0, 0])
-    this.game.movePlayerDirection(sum[0], sum[1])
+    this.game.movePlayer(sum[0], sum[1])
   }
 
   static KEY_TO_DIRECTION: { [key: string]: [number, number] } = {

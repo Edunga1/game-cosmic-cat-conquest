@@ -21,6 +21,10 @@ export default abstract class Mobile {
     this.direction = distance
   }
 
+  moveTo(position: Point) {
+    this.position = position
+  }
+
   stop() {
     this.velocity = Point.zero()
   }

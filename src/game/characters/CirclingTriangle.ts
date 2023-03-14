@@ -1,8 +1,6 @@
 import Mobile from "../mobile/Mobile"
-import Sprite from "../sprite/Sprite"
 
 export default class CirclingTriangle extends Mobile {
-  sprite: Sprite
 
   constructor(
     context: CanvasRenderingContext2D

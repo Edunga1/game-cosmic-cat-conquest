@@ -35,7 +35,7 @@ export default class Cat extends Mobile {
     sprite?.update(delta)
     sprite?.draw(this.context, 0, 0, this.direction)
   }
-  
+
   move(distance: Point) {
     super.move(distance)
     this.mode = Mode.RUNNING

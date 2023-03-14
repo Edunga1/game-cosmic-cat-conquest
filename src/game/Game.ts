@@ -1,5 +1,6 @@
 import Cat from "./characters/Cat"
 import CirclingTriangle from "./characters/CirclingTriangle"
+import TargetPoint from "./characters/TargetPoint"
 import Point from "./core/Point"
 import Mobile from "./mobile/Mobile"
 import Space from "./space/Space"
@@ -11,6 +12,7 @@ export default class Game {
   delta = 0
   space: Space
   player: Mobile
+  targetPoint: Mobile
   enemies: Mobile[] = []
 
   constructor(
@@ -18,6 +20,7 @@ export default class Game {
   ) {
     this.space = new Space(context)
     this.player = new Cat(context)
+    this.targetPoint = new TargetPoint(context, this.player)
 
     for (let i = 0; i < 10; i++) {
       const enemy = new CirclingTriangle(context)
@@ -39,11 +42,14 @@ export default class Game {
     this.space.animate(this.delta)
     this.updatePlayer()
     this.updateEnemies()
+    this.updateTargetPoint()
     this.context.restore()
   }
 
-  movePlayerDirection(x: number, y: number) {
-    this.player.move(new Point(x, y))
+  movePlayer(x: number, y: number) {
+    const distance = new Point(x, y)
+    this.player.move(distance)
+    this.targetPoint.moveTo(this.player.position.add(distance))
   }
 
   stopPlayer() {
@@ -61,12 +67,22 @@ export default class Game {
     this.enemies.forEach(enemy => {
       this.context.save()
       this.context.translate(
-        this.width / 2 - this.player.position.x - enemy.position.x,
-        this.height / 2 - this.player.position.y - enemy.position.y,
+        this.width / 2 - this.player.position.x + enemy.position.x,
+        this.height / 2 - this.player.position.y + enemy.position.y,
       )
       enemy.animate(this.delta)
       this.context.restore()
     })
+  }
+
+  private updateTargetPoint() {
+    this.context.save()
+    this.context.translate(
+      this.width / 2 - this.player.position.x + this.targetPoint.position.x,
+      this.height / 2 - this.player.position.y + this.targetPoint.position.y,
+    )
+    this.targetPoint.animate(this.delta)
+    this.context.restore()
   }
 
   private updateDelta(time: number) {
