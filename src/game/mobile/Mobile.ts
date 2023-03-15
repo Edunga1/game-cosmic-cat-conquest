@@ -5,6 +5,8 @@ export default abstract class Mobile {
   velocity = Point.zero()
   direction = new Point(0, 0)
   lifetime = 0
+  maxLifetime = Infinity
+  onLifetimeEnd: () => void
 
   constructor(
     protected context: CanvasRenderingContext2D
@@ -32,6 +34,14 @@ export default abstract class Mobile {
   private update(delta: number) {
     this.lifetime += delta
     this.position = this.position.add(this.velocity.multiply(delta / 5))
+    // notify when lifetime is over
+    if (this.checkLifetimeEnd()) {
+      this.onLifetimeEnd?.()
+    }
+  }
+
+  protected checkLifetimeEnd(): boolean {
+    return this.lifetime > this.maxLifetime
   }
 
   protected abstract render(delta: number): void

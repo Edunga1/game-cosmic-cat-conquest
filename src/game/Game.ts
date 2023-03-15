@@ -2,6 +2,7 @@ import Cat from "./characters/Cat"
 import CirclingTriangle from "./characters/CirclingTriangle"
 import TargetPoint from "./characters/TargetPoint"
 import Point from "./core/Point"
+import ConfettiEffect from "./effects/ConfettiEffect"
 import Mobile from "./mobile/Mobile"
 import Space from "./space/Space"
 
@@ -55,6 +56,7 @@ export default class Game {
   stopPlayer() {
     this.player.stop()
     this.targetPoint.setVisible(false)
+    this.createCatAttackEffect()
   }
 
   private updatePlayer() {
@@ -80,5 +82,14 @@ export default class Game {
   private updateDelta(time: number) {
     this.delta = time - this.lastTime
     this.lastTime = time
+  }
+
+  private createCatAttackEffect() {
+    const effect = new ConfettiEffect(this.context)
+    effect.position = this.player.position
+    effect.onLifetimeEnd = () => {
+      this.mobiles.splice(this.mobiles.indexOf(effect), 1)
+    }
+    this.mobiles.push(effect)
   }
 }

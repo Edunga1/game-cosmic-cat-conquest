@@ -5,12 +5,14 @@ export default class Sprite {
   time = 0
   framesPerRow: number
   imageLoaded = false
+  loopCount = 0
 
   constructor(
     private image: HTMLImageElement,
     private frameWidth: number,
     private frameHeight: number,
     private framesPerSecond = 60,
+    private loop = true,
   ) {
     this.image.onload = () => {
       this.imageLoaded = true
@@ -19,12 +21,14 @@ export default class Sprite {
   }
 
   update(dt: number) {
+    if (!this.checkLoop()) return
     this.time += dt
     while (this.time > 1000/this.framesPerSecond) {
       this.time -= 1000/this.framesPerSecond
       this.frameIndex++
       if (this.frameIndex >= this.framesPerRow * Math.floor(this.image.height / this.frameHeight)) {
         this.frameIndex = 0
+        this.loopCount++
       }
     }
   }
@@ -35,6 +39,7 @@ export default class Sprite {
     y: number,
     direction: Point = Point.zero(),
   ) {
+    if (!this.checkLoop()) return
     if (!this.imageLoaded) return
 
     const row = Math.floor(this.frameIndex / this.framesPerRow)
@@ -56,5 +61,9 @@ export default class Sprite {
       this.frameHeight
     )
     ctx.restore()
+  }
+
+  private checkLoop(): boolean {
+    return this.loop || this.loopCount === 0
   }
 }
