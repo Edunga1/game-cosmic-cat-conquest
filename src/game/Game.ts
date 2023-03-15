@@ -40,9 +40,8 @@ export default class Game {
 
   animate(time: number) {
     this.updateDelta(time)
-    this.space.animate(this.delta)
-    this.updatePlayer()
     this.updateNonPlayerMobiles()
+    this.updatePlayer()
     this.context.restore()
   }
 
@@ -66,6 +65,7 @@ export default class Game {
   }
 
   private updateNonPlayerMobiles() {
+    this.space.animate(this.delta)
     this.mobiles.forEach(enemy => {
       this.context.save()
       this.context.translate(
