@@ -1,7 +1,6 @@
 import Sprite from "../sprite/Sprite"
 import EffectSprite from "../../../assets/images/confetti-sprites.png"
 import SpriteEffectBase from "./SpriteEffectBase"
-import Point from "../core/Point"
 
 export default class ConfettiEffect extends SpriteEffectBase {
   constructor(
