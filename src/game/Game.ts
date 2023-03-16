@@ -87,6 +87,7 @@ export default class Game {
   private createCatAttackEffect() {
     const effect = new ConfettiEffect(this.context)
     effect.position = this.player.position
+    effect.direction = this.player.direction
     effect.onLifetimeEnd = () => {
       this.mobiles.splice(this.mobiles.indexOf(effect), 1)
     }
