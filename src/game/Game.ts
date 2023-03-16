@@ -59,6 +59,13 @@ export default class Game {
     this.createCatAttackEffect()
   }
 
+  getSummary() {
+    return `
+      Player: ${this.player.position.x}, ${this.player.position.y}
+      Mobiles: ${this.mobiles.length}
+    `
+  }
+
   private updatePlayer() {
     this.context.save()
     this.context.translate(this.width / 2, this.height / 2)

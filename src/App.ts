@@ -23,6 +23,13 @@ export class App {
     this.animate()
   }
 
+  enableDebugMode(): App {
+    setInterval(() => {
+      console.log(this.game.getSummary())
+    }, 5000)
+    return this
+  }
+
   private animate(time = 0) {
     this.game.animate(time)
 
@@ -122,4 +129,4 @@ export class App {
   }
 }
 
-new App().start()
+new App().enableDebugMode().start()
