@@ -7,6 +7,7 @@ import Mobile from "./mobile/Mobile"
 import Space from "./space/Space"
 
 export default class Game {
+  showCoordinates = false
   width = 0
   height = 0
   lastTime = 0
@@ -70,6 +71,7 @@ export default class Game {
     this.context.save()
     this.context.translate(this.width / 2, this.height / 2)
     this.player.animate(this.delta)
+    this.drawCoordinates(this.player.position, 20)
     this.context.restore()
   }
 
@@ -82,6 +84,7 @@ export default class Game {
         this.height / 2 - this.player.position.y + enemy.position.y,
       )
       enemy.animate(this.delta)
+      this.drawCoordinates(enemy.position, 10, 5)
       this.context.restore()
     })
   }
@@ -99,5 +102,16 @@ export default class Game {
       this.mobiles.splice(this.mobiles.indexOf(effect), 1)
     }
     this.mobiles.push(effect)
+  }
+
+  private drawCoordinates(position: Point, margin: number, size = 8) {
+    if (!this.showCoordinates) {
+      return
+    }
+    this.context.fillStyle = "white"
+    this.context.font = `${size}px Arial`
+    const text = `${Math.round(position.x)}, ${Math.round(position.y)}`
+    const left = text.length / 4 * size
+    this.context.fillText(text, -left, margin)
   }
 }
