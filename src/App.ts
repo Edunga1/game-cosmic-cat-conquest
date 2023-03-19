@@ -11,8 +11,12 @@ export class App {
 
   constructor() {
     this.canvas = document.createElement("canvas")
-    this.context = this.canvas.getContext("2d")!
-      this.game = new Game(this.context)
+    const context = this.canvas.getContext("2d")
+    if (!context) {
+      throw new Error("Could not get canvas context")
+    }
+    this.context = context
+    this.game = new Game(this.context)
   }
 
   start() {
