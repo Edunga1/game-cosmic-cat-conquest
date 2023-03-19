@@ -1,4 +1,5 @@
 import Point from "../core/Point"
+import Attributes from "./Attributes"
 
 export default abstract class Mobile {
   position = Point.zero()
@@ -7,9 +8,11 @@ export default abstract class Mobile {
   lifetime = 0
   maxLifetime = Infinity
   onLifetimeEnd: () => void
+  attributes = new Attributes(5, 1)
+  isEnemy = false
 
   constructor(
-    protected context: CanvasRenderingContext2D
+    protected context: CanvasRenderingContext2D,
   ) {
   }
 
@@ -29,6 +32,10 @@ export default abstract class Mobile {
 
   stop() {
     this.velocity = Point.zero()
+  }
+
+  attack(target: Mobile) {
+    target.attributes.hp.value -= this.attributes.power
   }
 
   private update(delta: number) {

@@ -38,5 +38,9 @@ export default class Point {
   angle() {
     return Math.atan2(this.y, this.x)
   }
+
+  distanceTo(point: Point) {
+    return this.subtract(point).length()
+  }
 }
 

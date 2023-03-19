@@ -6,6 +6,10 @@ export default class CirclingTriangle extends Mobile {
     context: CanvasRenderingContext2D
   ) {
     super(context)
+
+    this.attributes.hp.setMax(5)
+    this.attributes.power = 5
+    this.isEnemy = true
   }
 
   render() {
