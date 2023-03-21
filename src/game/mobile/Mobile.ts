@@ -9,7 +9,7 @@ export default abstract class Mobile {
   maxLifetime = Infinity
   onLifetimeEnd: () => void
   attributes = new Attributes(5, 1)
-  isEnemy = false
+  enemies: Mobile[] = []
 
   constructor(
     protected context: CanvasRenderingContext2D,
@@ -36,6 +36,10 @@ export default abstract class Mobile {
 
   attack(target: Mobile) {
     target.attributes.hp.value -= this.attributes.power
+  }
+
+  isOpponent(mobile: Mobile): boolean {
+    return this.enemies.includes(mobile)
   }
 
   private update(delta: number) {

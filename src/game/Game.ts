@@ -29,6 +29,8 @@ export default class Game {
       const enemy = new CirclingTriangle(context)
       enemy.position.x = Math.random() * 1000 - 500
       enemy.position.y = Math.random() * 1000 - 500
+      enemy.enemies.push(this.player)
+      this.player.enemies.push(enemy)
       this.mobiles.push(enemy)
     }
   }
@@ -83,7 +85,7 @@ export default class Game {
 
   private attackEnemy() {
     const nearestEnemy = this.mobiles
-      .filter(mobile => mobile.isEnemy)
+      .filter(mobile => this.player.isOpponent(mobile))
       .find(mobile => mobile.position.distanceTo(this.player.position) < 50)
     if (!nearestEnemy) {
       return
