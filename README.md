@@ -4,7 +4,7 @@
 
 WIP Demo: https://edunga1.github.io/game-cosmic-cat-conquest/
 
-# Open Source
+# Assets
 
 this project uses the following open source projects:
 
