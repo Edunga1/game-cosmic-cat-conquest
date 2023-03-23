@@ -9,6 +9,7 @@ export default class TargetPoint extends Mobile {
     private source: Mobile,
   ) {
     super(context)
+    this.isLiving = false
   }
 
   setVisible(visible: boolean) {

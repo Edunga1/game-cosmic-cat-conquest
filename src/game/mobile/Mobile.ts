@@ -7,6 +7,7 @@ export default abstract class Mobile {
   direction = new Point(0, 0)
   lifetime = 0
   maxLifetime = Infinity
+  isLiving = true
   onLifetimeEnd: () => void
   attributes = new Attributes(5, 1)
   enemies: Mobile[] = []

@@ -74,7 +74,7 @@ export default class Game {
     this.context.save()
     this.context.translate(this.width / 2, this.height / 2)
     this.player.animate(this.delta)
-    this.drawCoordinates(this.player.position, 20)
+    this.drawCoordinates(this.player, 20)
     this.context.restore()
     this.removeDeadEnemies()
   }
@@ -102,7 +102,7 @@ export default class Game {
         this.height / 2 - this.player.position.y + enemy.position.y,
       )
       enemy.animate(this.delta)
-      this.drawCoordinates(enemy.position, 10, 5)
+      this.drawCoordinates(enemy, 10, 5)
       this.context.restore()
     })
   }
@@ -122,13 +122,13 @@ export default class Game {
     this.mobiles.push(effect)
   }
 
-  private drawCoordinates(position: Point, margin: number, size = 8) {
-    if (!this.showCoordinates) {
+  private drawCoordinates(mobile: Mobile, margin: number, size = 8) {
+    if (!this.showCoordinates || !mobile.isLiving) {
       return
     }
     this.context.fillStyle = "white"
     this.context.font = `${size}px Arial`
-    const text = `${Math.round(position.x)}, ${Math.round(position.y)}`
+    const text = `${Math.round(mobile.position.x)}, ${Math.round(mobile.position.y)}`
     const left = text.length / 4 * size
     this.context.fillText(text, -left, margin)
   }

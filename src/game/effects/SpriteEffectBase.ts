@@ -8,7 +8,8 @@ export default abstract class SpriteEffectBase extends Mobile {
     context: CanvasRenderingContext2D,
     private sprite: Sprite
   ) {
-    super(context);
+    super(context)
+    this.isLiving = false
   }
 
   protected checkLifetimeEnd(): boolean {
