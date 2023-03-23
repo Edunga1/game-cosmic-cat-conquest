@@ -28,7 +28,7 @@ export class App {
   }
 
   enableDebugMode(): App {
-    this.game.showCoordinates = true
+    this.game.options.showCoordinates = true
     setInterval(() => {
       console.log(this.game.getSummary())
     }, 5000)

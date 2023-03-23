@@ -7,7 +7,9 @@ import Mobile from "./mobile/Mobile"
 import Space from "./space/Space"
 
 export default class Game {
-  showCoordinates = false
+  options = {
+    showCoordinates: false,
+  }
   width = 0
   height = 0
   lastTime = 0
@@ -123,7 +125,7 @@ export default class Game {
   }
 
   private drawCoordinates(mobile: Mobile, margin: number, size = 8) {
-    if (!this.showCoordinates || !mobile.isLiving) {
+    if (!this.options.showCoordinates || !mobile.isLiving) {
       return
     }
     this.context.fillStyle = "white"
