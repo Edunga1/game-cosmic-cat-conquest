@@ -5,8 +5,8 @@ export class App {
   canvas: HTMLCanvasElement
   context: CanvasRenderingContext2D
   game: Game
-  width: number
-  height: number
+  width = 0
+  height = 0
   keys: string[] = []
 
   constructor() {

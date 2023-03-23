@@ -1,8 +1,8 @@
 import Point from "../core/Point"
 
 export default class Space {
-  width: number
-  height: number
+  width = 0
+  height = 0
   starElapsed = 0
   backgroundColor = "rgb(10, 10, 10)"
   starColorRange = 100

@@ -9,7 +9,6 @@ export default class CirclingTriangle extends Mobile {
 
     this.attributes.hp.setMax(5)
     this.attributes.power = 5
-    this.isEnemy = true
   }
 
   render() {

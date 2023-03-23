@@ -3,7 +3,7 @@ import Point from "../core/Point"
 export default class Sprite {
   frameIndex = 0
   time = 0
-  framesPerRow: number
+  framesPerRow = 0
   imageLoaded = false
   loopCount = 0
 

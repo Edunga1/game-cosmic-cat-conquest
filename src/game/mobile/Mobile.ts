@@ -8,7 +8,7 @@ export default abstract class Mobile {
   lifetime = 0
   maxLifetime = Infinity
   isLiving = true
-  onLifetimeEnd: () => void
+  onLifetimeEnd?: () => void
   attributes = new Attributes(5, 1)
   enemies: Mobile[] = []
 
