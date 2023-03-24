@@ -9,11 +9,20 @@ export default class CirclingTriangle extends Mobile {
 
     this.attributes.hp.setMax(5)
     this.attributes.power = 5
+    this.topSpeed = .5
   }
 
-  render() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  protected update(_: number): void {
+    if (this.enemies.length < 0) {
+      return
+    }
+    this.move(this.enemies[0].position.subtract(this.position))
+  }
+
+  render(): void {
     this.context.save()
-    this.context.rotate(this.lifetime / 1000)
+    this.context.rotate(this.velocity.angle() + Math.PI / 2)
     this.context.beginPath()
     this.context.moveTo(0, -5)
     this.context.lineTo(5, 5)

@@ -42,5 +42,13 @@ export default class Point {
   distanceTo(point: Point) {
     return this.subtract(point).length()
   }
+
+  limit(max: number) {
+    const length = this.length()
+    if (length > max) {
+      return this.unit().multiply(max)
+    }
+    return this
+  }
 }
 

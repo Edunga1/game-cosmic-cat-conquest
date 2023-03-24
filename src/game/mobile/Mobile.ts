@@ -4,6 +4,7 @@ import Attributes from "./Attributes"
 export default abstract class Mobile {
   position = Point.zero()
   velocity = Point.zero()
+  topSpeed = 1
   direction = new Point(0, 0)
   lifetime = 0
   maxLifetime = Infinity
@@ -18,12 +19,13 @@ export default abstract class Mobile {
   }
 
   animate(delta: number) {
+    this.updateEssentials(delta)
     this.update(delta)
     this.render(delta)
   }
 
   move(distance: Point) {
-    this.velocity = distance.unit()
+    this.velocity = distance.limit(this.topSpeed)
     this.direction = distance
   }
 
@@ -43,7 +45,7 @@ export default abstract class Mobile {
     return this.enemies.includes(mobile)
   }
 
-  private update(delta: number) {
+  private updateEssentials(delta: number) {
     this.lifetime += delta
     this.position = this.position.add(this.velocity.multiply(delta / 5))
     // notify when lifetime is over
@@ -55,6 +57,9 @@ export default abstract class Mobile {
   protected checkLifetimeEnd(): boolean {
     return this.lifetime > this.maxLifetime
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  protected update(_: number): void { /* empty */ }
 
   protected abstract render(delta: number): void
 }
