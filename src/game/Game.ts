@@ -62,7 +62,6 @@ export default class Game {
     this.player.stop()
     this.targetPoint.setVisible(false)
     this.createCatAttackEffect()
-    this.attackEnemy()
   }
 
   getSummary() {
@@ -83,16 +82,6 @@ export default class Game {
 
   private removeDeadEnemies() {
     this.mobiles = this.mobiles.filter(mobile => mobile.attributes.hp.value > 0)
-  }
-
-  private attackEnemy() {
-    const nearestEnemy = this.mobiles
-      .filter(mobile => this.player.isOpponent(mobile))
-      .find(mobile => mobile.position.distanceTo(this.player.position) < 50)
-    if (!nearestEnemy) {
-      return
-    }
-    this.player.attack(nearestEnemy)
   }
 
   private updateNonPlayerMobiles() {

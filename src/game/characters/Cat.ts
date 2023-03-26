@@ -47,5 +47,9 @@ export default class Cat extends Mobile {
   stop() {
     super.stop()
     this.mode = Mode.IDLE
+    const nearEnemies = this.enemies
+      .filter(enemy => this.isOpponent(enemy))
+      .filter(mobile => mobile.position.distanceTo(this.position) < 50)
+    nearEnemies.forEach(enemy => this.attack(enemy))
   }
 }
