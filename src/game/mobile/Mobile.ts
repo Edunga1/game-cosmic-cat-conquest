@@ -10,13 +10,12 @@ export default abstract class Mobile {
   maxLifetime = Infinity
   isLiving = true
   onLifetimeEnd?: () => void
-  attributes = new Attributes(5, 1)
+  attributes = new Attributes()
   enemies: Mobile[] = []
 
   constructor(
     protected context: CanvasRenderingContext2D,
-  ) {
-  }
+  ) {}
 
   animate(delta: number) {
     this.updateEssentials(delta)

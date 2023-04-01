@@ -1,12 +1,7 @@
 export default class Attributes {
   public hp = NumericAttribute.of(100)
-
-  constructor(
-    hp: number,
-    public power = 0,
-  ) {
-    this.hp = NumericAttribute.of(hp)
-  }
+  public size = 1
+  public power = 0
 
   damage(source: Attributes) {
     this.hp.value -= source.power

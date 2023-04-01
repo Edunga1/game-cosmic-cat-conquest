@@ -25,6 +25,7 @@ export default class Cat extends Mobile {
 
     this.attributes.hp.setMax(20)
     this.attributes.power = 5
+    this.attributes.size = 10
 
     Cat.SPRITES.forEach(({ mode, img, width, height, fps }) => {
       const image = new Image()
