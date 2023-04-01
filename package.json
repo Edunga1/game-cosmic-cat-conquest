@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "develop": "parcel index.html",
+    "develop": "parcel index.html --port 8000",
     "build": "parcel build index.html --public-url ./"
   },
   "keywords": [],
