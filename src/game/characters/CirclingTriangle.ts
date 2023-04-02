@@ -18,9 +18,7 @@ export default class CirclingTriangle extends Mobile {
     if (this.enemies.length < 0) {
       return
     }
-    const dest = this.enemies[0].position.subtract(this.position)
-    const margin = dest.unit().multiply(this.enemies[0].attributes.size)
-    this.move(dest.subtract(margin))
+    this.moveToMobile(this.enemies[0])
   }
 
   render(): void {

@@ -28,8 +28,10 @@ export default abstract class Mobile {
     this.direction = distance
   }
 
-  moveTo(position: Point) {
-    this.position = position
+  moveToMobile(target: Mobile) {
+    const dest = target.position.subtract(this.position)
+    const margin = dest.unit().multiply(target.attributes.size)
+    this.move(dest.subtract(margin))
   }
 
   stop() {

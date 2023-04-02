@@ -1,4 +1,3 @@
-import Point from "../core/Point"
 import Mobile from "../mobile/Mobile"
 
 export default class TargetPoint extends Mobile {
@@ -27,9 +26,5 @@ export default class TargetPoint extends Mobile {
     this.context.strokeStyle = '#FFF'
     this.context.setLineDash([5, 15])
     this.context.stroke()
-  }
-
-  moveTo(position: Point) {
-    super.moveTo(position)
   }
 }

@@ -54,7 +54,7 @@ export default class Game {
   movePlayer(x: number, y: number) {
     const distance = new Point(x, y)
     this.player.move(distance)
-    this.targetPoint.moveTo(this.player.position.add(distance))
+    this.targetPoint.position = this.player.position.add(distance)
     this.targetPoint.setVisible(true)
   }
 
