@@ -66,7 +66,9 @@ export default class Game {
 
   getSummary() {
     return `
-      Player: ${this.player.position.x}, ${this.player.position.y}
+      Player:
+        * pos: ${this.player.position.x}, ${this.player.position.y}
+        * hp : ${this.player.attributes.hp.value} / ${this.player.attributes.hp.max}
       Mobiles: ${this.mobiles.length}
     `
   }

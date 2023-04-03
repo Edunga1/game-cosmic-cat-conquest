@@ -11,6 +11,7 @@ export default abstract class Mobile {
   isLiving = true
   onLifetimeEnd?: () => void
   attributes = new Attributes()
+  lastAttack = 0
   enemies: Mobile[] = []
 
   constructor(
@@ -29,9 +30,10 @@ export default abstract class Mobile {
   }
 
   moveToMobile(target: Mobile) {
-    const dest = target.position.subtract(this.position)
-    const margin = dest.unit().multiply(target.attributes.size)
-    this.move(dest.subtract(margin))
+    const distance = target.position.subtract(this.position)
+    const margin = distance.unit().multiply(target.attributes.size)
+    const dest = distance.subtract(margin)
+    this.move(dest)
   }
 
   stop() {
@@ -39,6 +41,15 @@ export default abstract class Mobile {
   }
 
   attack(target: Mobile) {
+    if (this.lastAttack < this.attributes.attackPeriod) {
+      return
+    }
+
+    if (this.attributes.range.value < this.position.distanceTo(target.position) - target.attributes.size) {
+      return
+    }
+
+    this.lastAttack = 0
     target.attributes.hp.value -= this.attributes.power
   }
 
@@ -48,6 +59,7 @@ export default abstract class Mobile {
 
   private updateEssentials(delta: number) {
     this.lifetime += delta
+    this.lastAttack += delta
     this.position = this.position.add(this.velocity.multiply(delta / 5))
     // notify when lifetime is over
     if (this.checkLifetimeEnd()) {

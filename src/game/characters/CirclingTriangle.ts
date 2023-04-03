@@ -7,7 +7,7 @@ export default class CirclingTriangle extends Mobile {
   ) {
     super(context)
 
-    this.attributes.hp.setMax(5)
+    this.attributes.hp.max = 5
     this.attributes.power = 5
     this.attributes.size = 1
     this.topSpeed = .5
@@ -19,6 +19,7 @@ export default class CirclingTriangle extends Mobile {
       return
     }
     this.moveToMobile(this.enemies[0])
+    this.attack(this.enemies[0])
   }
 
   render(): void {
