@@ -1,4 +1,4 @@
-import Point from "../core/Point"
+import Point from "../core/math/Point"
 
 export default class Space {
   width = 0

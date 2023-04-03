@@ -2,7 +2,7 @@ import Mobile from "../mobile/Mobile"
 import Sprite from "../sprite/Sprite"
 import CatRunningSprite from "../../../assets/images/cat-sprites-running.png"
 import CatIdleSprite from "../../../assets/images/cat-sprites-idle.png"
-import Point from "../core/Point"
+import Point from "../core/math/Point"
 
 enum Mode {
   IDLE,

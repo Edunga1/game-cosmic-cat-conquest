@@ -1,4 +1,4 @@
-import Point from "./game/core/Point"
+import Point from "./game/core/math/Point"
 import Game from "./game/Game"
 
 export class App {

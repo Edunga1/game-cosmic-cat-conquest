@@ -1,4 +1,4 @@
-import Point from "../core/Point"
+import Point from "../core/math/Point"
 import Attributes from "./Attributes"
 
 export default abstract class Mobile {
