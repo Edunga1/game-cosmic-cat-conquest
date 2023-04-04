@@ -4,7 +4,7 @@ import Attributes from "./Attributes"
 export default abstract class Mobile {
   position = Point.zero()
   velocity = Point.zero()
-  topSpeed = 1
+  speed = 1
   direction = new Point(0, 0)
   lifetime = 0
   maxLifetime = Infinity
@@ -25,12 +25,16 @@ export default abstract class Mobile {
   }
 
   move(distance: Point) {
-    this.velocity = distance.limit(this.topSpeed)
+    this.velocity = distance.limit(this.speed)
     this.direction = distance
   }
 
   moveToMobile(target: Mobile) {
     const distance = target.position.subtract(this.position)
+    if (distance.length() < target.attributes.size) {
+      this.stop()
+      return
+    }
     const margin = distance.unit().multiply(target.attributes.size)
     const dest = distance.subtract(margin)
     this.move(dest)
@@ -50,6 +54,7 @@ export default abstract class Mobile {
     }
 
     this.lastAttack = 0
+    this.direction = target.position.subtract(this.position)
     target.attributes.hp.value -= this.attributes.power
   }
 
