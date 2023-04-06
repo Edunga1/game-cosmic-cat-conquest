@@ -34,5 +34,18 @@ export default class CirclingTriangle extends Mobile {
     this.context.fillStyle = "red"
     this.context.fill()
     this.context.restore()
+    // attacking effect
+    if (this.lastAttack > 200) return
+    this.context.save()
+    this.context.rotate(this.direction.angle() + Math.PI / 2)
+    this.context.beginPath()
+    this.context.moveTo(0, -4)
+    this.context.lineTo(4, 4)
+    this.context.lineTo(0, 2)
+    this.context.lineTo(-4, 4)
+    this.context.lineTo(0, -4)
+    this.context.fillStyle = `rgba(255, 255, 255, ${this.lastAttack / 200})`
+    this.context.fill()
+    this.context.restore()
   }
 }
