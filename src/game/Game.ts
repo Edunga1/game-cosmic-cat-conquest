@@ -5,6 +5,7 @@ import Point from "./core/math/Point"
 import ConfettiEffect from "./effects/ConfettiEffect"
 import Mobile from "./mobile/Mobile"
 import Space from "./space/Space"
+import GameLevel from "./stage/GameLevel"
 
 export default class Game {
   options = {
@@ -18,6 +19,7 @@ export default class Game {
   player: Mobile
   targetPoint: TargetPoint
   mobiles: Mobile[] = []
+  gameLevel = new GameLevel(this)
 
   constructor(
     private context: CanvasRenderingContext2D,
@@ -26,15 +28,6 @@ export default class Game {
     this.player = new Cat(context)
     this.targetPoint = new TargetPoint(context, this.player)
     this.mobiles.push(this.targetPoint)
-
-    for (let i = 0; i < 10; i++) {
-      const enemy = new CirclingTriangle(context)
-      enemy.position.x = Math.random() * 1000 - 500
-      enemy.position.y = Math.random() * 1000 - 500
-      enemy.enemies.push(this.player)
-      this.player.enemies.push(enemy)
-      this.mobiles.push(enemy)
-    }
   }
 
   resize(width: number, height: number) {
@@ -46,6 +39,7 @@ export default class Game {
 
   animate(time: number) {
     this.updateDelta(time)
+    this.updateGameLevel()
     this.updateNonPlayerMobiles()
     this.updatePlayer()
     this.context.restore()
@@ -73,22 +67,27 @@ export default class Game {
     `
   }
 
+  createEnemy() {
+    const enemy = new CirclingTriangle(this.context)
+    enemy.position.x = Math.random() * 1000 - 500
+    enemy.position.y = Math.random() * 1000 - 500
+    enemy.enemies.add(this.player)
+    this.player.enemies.add(enemy)
+    this.mobiles.push(enemy)
+  }
+
   private updatePlayer() {
     this.context.save()
     this.context.translate(this.width / 2, this.height / 2)
     this.player.animate(this.delta)
     this.drawCoordinates(this.player, 20)
     this.context.restore()
-    this.removeDeadEnemies()
-  }
-
-  private removeDeadEnemies() {
-    this.mobiles = this.mobiles.filter(mobile => mobile.attributes.hp.value > 0)
   }
 
   private updateNonPlayerMobiles() {
     this.space.animate(this.delta)
-    this.mobiles.forEach(enemy => {
+    const aliveMobiles = this.mobiles.filter(mobile => mobile.isAlive)
+    aliveMobiles.forEach(enemy => {
       this.context.save()
       this.context.translate(
         this.width / 2 - this.player.position.x + enemy.position.x,
@@ -98,6 +97,10 @@ export default class Game {
       this.drawCoordinates(enemy, 10, 5)
       this.context.restore()
     })
+  }
+
+  private updateGameLevel() {
+    this.gameLevel.update()
   }
 
   private updateDelta(time: number) {

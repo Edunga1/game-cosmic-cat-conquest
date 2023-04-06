@@ -1,5 +1,6 @@
 import Point from "../core/math/Point"
 import Attributes from "./Attributes"
+import MobileCollection from "./MobileCollection"
 
 export default abstract class Mobile {
   position = Point.zero()
@@ -12,7 +13,8 @@ export default abstract class Mobile {
   onLifetimeEnd?: () => void
   attributes = new Attributes()
   lastAttack = 0
-  enemies: Mobile[] = []
+  isAlive = true
+  enemies: MobileCollection = new MobileCollection()
 
   constructor(
     protected context: CanvasRenderingContext2D,
@@ -55,7 +57,7 @@ export default abstract class Mobile {
 
     this.lastAttack = 0
     this.direction = target.position.subtract(this.position)
-    target.attributes.hp.value -= this.attributes.power
+    target.damage(this.attributes.power)
   }
 
   isOpponent(mobile: Mobile): boolean {
@@ -69,6 +71,13 @@ export default abstract class Mobile {
     // notify when lifetime is over
     if (this.checkLifetimeEnd()) {
       this.onLifetimeEnd?.()
+    }
+  }
+
+  private damage(damage: number) {
+    this.attributes.hp.value -= damage
+    if (this.attributes.hp.value <= 0) {
+      this.isAlive = false
     }
   }
 

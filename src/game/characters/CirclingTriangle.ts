@@ -15,11 +15,11 @@ export default class CirclingTriangle extends Mobile {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected update(_: number): void {
-    if (this.enemies.length < 0) {
+    if (this.enemies.first === null) {
       return
     }
-    this.moveToMobile(this.enemies[0])
-    this.attack(this.enemies[0])
+    this.moveToMobile(this.enemies.first)
+    this.attack(this.enemies.first)
   }
 
   render(): void {
