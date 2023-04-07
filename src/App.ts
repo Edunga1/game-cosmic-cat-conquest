@@ -35,9 +35,8 @@ export class App {
     return this
   }
 
-  private animate(time = 0) {
-    this.game.animate(time)
-
+  private animate(delta = 0) {
+    this.game.animate(delta)
     requestAnimationFrame(this.animate.bind(this))
   }
 
