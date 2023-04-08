@@ -69,8 +69,7 @@ export default class Game {
 
   createEnemy() {
     const enemy = new CirclingTriangle(this.context)
-    enemy.position.x = Math.random() * 1000 - 500
-    enemy.position.y = Math.random() * 1000 - 500
+    enemy.position = this.player.position.around(Math.random() * 200 + 400)
     enemy.enemies.add(this.player)
     this.player.enemies.add(enemy)
     this.mobiles.push(enemy)

@@ -50,5 +50,13 @@ export default class Point {
     }
     return this
   }
+
+  around(distance: number) {
+    const angle = Math.random() * Math.PI * 2
+    return new Point(
+      this.x + Math.cos(angle) * distance,
+      this.y + Math.sin(angle) * distance,
+    )
+  }
 }
 
