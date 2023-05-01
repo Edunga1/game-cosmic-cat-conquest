@@ -1,8 +1,12 @@
 import Point from "../core/math/Point"
 import Attributes from "./Attributes"
+import IMobileAddedObservable from "./IMobileAddedObservable"
+import IMobileAddedObserver from "./IMobileAddedObserver"
 import MobileCollection from "./MobileCollection"
 
-export default abstract class Mobile {
+export default abstract class Mobile implements IMobileAddedObservable {
+  observers: IMobileAddedObserver[] = []
+
   position = Point.zero()
   velocity = Point.zero()
   speed = 1
@@ -18,8 +22,7 @@ export default abstract class Mobile {
 
   constructor(
     protected context: CanvasRenderingContext2D,
-  ) {}
-
+  ) { }
   animate(delta: number) {
     this.updateEssentials(delta)
     this.update(delta)
@@ -83,6 +86,14 @@ export default abstract class Mobile {
 
   protected checkLifetimeEnd(): boolean {
     return this.lifetime > this.maxLifetime
+  }
+
+  addObserver(observer: IMobileAddedObserver): void {
+    this.observers.push(observer)
+  }
+
+  notifyMobileAdded(mobile: Mobile): void {
+    this.observers.forEach(observer => observer.onMobileAdded(mobile))
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
