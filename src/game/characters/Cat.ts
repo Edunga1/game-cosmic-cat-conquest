@@ -51,8 +51,6 @@ export default class Cat extends Mobile {
   stop() {
     super.stop()
     this.mode = Mode.IDLE
-    this.enemies
-      .nearestMobilesInRange(this.position, 50)
-      .forEach(enemy => this.attack(enemy))
+    this.attackDirection(this.direction)
   }
 }

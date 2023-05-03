@@ -19,7 +19,7 @@ export default class CirclingTriangle extends Mobile {
       return
     }
     this.moveToMobile(this.enemies.first)
-    this.attack(this.enemies.first)
+    this.attack([this.enemies.first])
   }
 
   render(): void {

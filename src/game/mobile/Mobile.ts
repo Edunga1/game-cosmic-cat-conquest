@@ -49,18 +49,32 @@ export default abstract class Mobile implements IMobileAddedObservable {
     this.velocity = Point.zero()
   }
 
-  attack(target: Mobile) {
+  attack(targets: Mobile[]): boolean {
     if (this.lastAttack < this.attributes.attackPeriod) {
-      return
+      return false
     }
 
-    if (this.attributes.range.value < this.position.distanceTo(target.position) - target.attributes.size) {
-      return
+    const targetsInRange = targets.filter(t =>
+      this.attributes.range.value >= this.position.distanceTo(t.position) - t.attributes.size
+    )
+
+    if (targetsInRange.length === 0) {
+      return false
     }
 
     this.lastAttack = 0
-    this.direction = target.position.subtract(this.position)
-    target.damage(this.attributes.power)
+    this.direction = targets[0].position.subtract(this.position)
+    targets.forEach(target => target.damage(this.attributes.power))
+      
+    return true
+  }
+
+  attackDirection(direction: Point): boolean {
+    const attackPoint = this.position.add(direction.unit().multiply(this.attributes.range.value))
+    const targets = this.enemies.nearestMobilesInRange(attackPoint, this.attributes.range.value)
+    const result = this.attack(targets)
+    this.direction = direction.unit()
+    return result
   }
 
   isOpponent(mobile: Mobile): boolean {
