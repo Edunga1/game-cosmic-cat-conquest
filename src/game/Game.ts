@@ -24,9 +24,9 @@ export default class Game {
   constructor(
     private context: CanvasRenderingContext2D,
   ) {
-    this.space = new Space(context)
-    this.player = new Cat(context)
-    this.targetPoint = new TargetPoint(context, this.player)
+    this.space = new Space(this.context)
+    this.player = new Cat(this.context)
+    this.targetPoint = new TargetPoint(this.context, this.player)
     this.mobiles.push(this.targetPoint)
   }
 
@@ -43,6 +43,7 @@ export default class Game {
     this.updateNonPlayerMobiles()
     this.updatePlayer()
     this.context.restore()
+    this.processGameOver()
   }
 
   movePlayer(x: number, y: number) {
@@ -73,6 +74,20 @@ export default class Game {
     enemy.enemies.add(this.player)
     this.player.enemies.add(enemy)
     this.mobiles.push(enemy)
+  }
+
+  private reset() {
+    this.mobiles = []
+    this.player = new Cat(this.context)
+    this.targetPoint = new TargetPoint(this.context, this.player)
+    this.mobiles.push(this.targetPoint)
+  }
+
+  private processGameOver() {
+    if (this.player.isAlive) {
+      return
+    }
+    this.reset()
   }
 
   private updatePlayer() {
