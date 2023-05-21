@@ -18,6 +18,11 @@ export default class Space {
     this.render(delta)
   }
 
+  resize(width: number, height: number) {
+    this.width = width
+    this.height = height
+  }
+
   private render(delta: number) {
     this.renderBackground()
     this.renderStars()

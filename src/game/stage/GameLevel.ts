@@ -11,6 +11,7 @@ export default class GameLevel {
   }
 
   private createEnemy() {
+    if (!this.game.player) return
     if (this.game.player.enemies.length >= 10) return
     this.game.createEnemy()
   }

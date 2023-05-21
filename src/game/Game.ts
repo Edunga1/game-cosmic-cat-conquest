@@ -15,26 +15,22 @@ export default class Game {
   height = 0
   lastTime = 0
   delta = 0
-  space: Space
-  player: Mobile
-  targetPoint: TargetPoint
+  space?: Space = undefined
+  player?: Mobile = undefined
+  targetPoint?: TargetPoint = undefined
   mobiles: Mobile[] = []
   gameLevel = new GameLevel(this)
 
   constructor(
     private context: CanvasRenderingContext2D,
   ) {
-    this.space = new Space(this.context)
-    this.player = new Cat(this.context)
-    this.targetPoint = new TargetPoint(this.context, this.player)
-    this.mobiles.push(this.targetPoint)
+    this.reset()
   }
 
   resize(width: number, height: number) {
     this.width = width
     this.height = height
-    this.space.width = width
-    this.space.height = height
+    this.space?.resize(width, height)
   }
 
   animate(time: number) {
@@ -47,65 +43,78 @@ export default class Game {
   }
 
   movePlayer(x: number, y: number) {
+    if (!this.player) return
+
     const distance = new Point(x, y)
     this.player.move(distance)
+
+    if (!this.targetPoint) return
+
     this.targetPoint.position = this.player.position.add(distance)
-    this.targetPoint.setVisible(true)
+    this.targetPoint?.setVisible(true)
   }
 
   stopPlayer() {
-    this.player.stop()
-    this.targetPoint.setVisible(false)
+    this.player?.stop()
+    this.targetPoint?.setVisible(false)
     this.createCatAttackEffect()
   }
 
   getSummary() {
     return `
       Player:
-        * pos: ${this.player.position.x}, ${this.player.position.y}
-        * hp : ${this.player.attributes.hp.value} / ${this.player.attributes.hp.max}
-      Mobiles: ${this.mobiles.length}
+        * pos: ${this.player?.position.x}, ${this.player?.position.y}
+        * hp : ${this.player?.attributes.hp.value} / ${this.player?.attributes.hp.max}
+      Mobiles: ${this.mobiles?.length}
     `
   }
 
   createEnemy() {
     const enemy = new CirclingTriangle(this.context)
-    enemy.position = this.player.position.around(Math.random() * 200 + 400)
-    enemy.enemies.add(this.player)
-    this.player.enemies.add(enemy)
     this.mobiles.push(enemy)
+
+    if (!this.player) return
+
+    enemy.position = this.player?.position.around(Math.random() * 200 + 400)
+    enemy.enemies.add(this.player)
+    this.player?.enemies.add(enemy)
   }
 
   private reset() {
     this.mobiles = []
+    this.space = new Space(this.context)
+    this.space.resize(this.width, this.height)
     this.player = new Cat(this.context)
     this.targetPoint = new TargetPoint(this.context, this.player)
     this.mobiles.push(this.targetPoint)
   }
 
   private processGameOver() {
-    if (this.player.isAlive) {
-      return
-    }
+    if (this.player?.isAlive) return
     this.reset()
   }
 
   private updatePlayer() {
     this.context.save()
     this.context.translate(this.width / 2, this.height / 2)
-    this.player.animate(this.delta)
-    this.drawCoordinates(this.player, 20)
+    if (this.player) {
+      this.player.animate(this.delta)
+      this.drawCoordinates(this.player, 20)
+    }
     this.context.restore()
   }
 
   private updateNonPlayerMobiles() {
-    this.space.animate(this.delta)
+    if (this.space) {
+      this.space.animate(this.delta)
+    }
     const aliveMobiles = this.mobiles.filter(mobile => mobile.isAlive)
+    const axis = this.player?.position || new Point(0, 0)
     aliveMobiles.forEach(enemy => {
       this.context.save()
       this.context.translate(
-        this.width / 2 - this.player.position.x + enemy.position.x,
-        this.height / 2 - this.player.position.y + enemy.position.y,
+        this.width / 2 - axis.x + enemy.position.x,
+        this.height / 2 - axis.y + enemy.position.y,
       )
       enemy.animate(this.delta)
       this.drawCoordinates(enemy, 10, 5)
@@ -123,6 +132,7 @@ export default class Game {
   }
 
   private createCatAttackEffect() {
+    if (!this.player) return
     const effect = new ConfettiEffect(this.context)
     effect.position = this.player.position
     effect.direction = this.player.direction
