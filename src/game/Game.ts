@@ -15,6 +15,7 @@ export default class Game {
   height = 0
   lastTime = 0
   delta = 0
+  paused = false
   space?: Space = undefined
   player?: Mobile = undefined
   targetPoint?: TargetPoint = undefined
@@ -34,6 +35,7 @@ export default class Game {
   }
 
   animate(time: number) {
+    if (this.paused) return
     this.updateDelta(time)
     this.updateGameLevel()
     this.updateNonPlayerMobiles()
@@ -80,18 +82,27 @@ export default class Game {
     this.player?.enemies.add(enemy)
   }
 
-  private reset() {
+  pause() {
+    this.paused = true
+  }
+
+  resume() {
+    this.paused = false
+  }
+
+  reset() {
     this.mobiles = []
     this.space = new Space(this.context)
     this.space.resize(this.width, this.height)
     this.player = new Cat(this.context)
     this.targetPoint = new TargetPoint(this.context, this.player)
     this.mobiles.push(this.targetPoint)
+    this.resume()
   }
 
   private processGameOver() {
     if (this.player?.isAlive) return
-    this.reset()
+    this.pause()
   }
 
   private updatePlayer() {
