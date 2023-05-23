@@ -7,6 +7,7 @@ export class App {
   game: Game
   width = 0
   height = 0
+  isControllingPlayer = false
   keys: string[] = []
 
   constructor() {
@@ -60,8 +61,21 @@ export class App {
     document.addEventListener("keyup", this.onKeyUp.bind(this))
   }
 
+  private movePlayer(x: number, y: number) {
+    if (this.game.player?.isAlive === false && !this.isControllingPlayer) {
+      this.game.reset()
+    }
+    this.isControllingPlayer = true
+    this.game.movePlayer(x, y)
+  }
+
+  private endMovePlayer() {
+    this.isControllingPlayer = false
+    this.game.stopPlayer()
+  }
+
   private onMouseDown(event: MouseEvent) {
-    this.game.movePlayer(
+    this.movePlayer(
       ...this.calculateDistanceFromCenter(event.clientX, event.clientY)
     )
   }
@@ -69,19 +83,19 @@ export class App {
   private onMouseMove(event: MouseEvent) {
     if (event.buttons === 0)
       return
-    this.game.movePlayer(
+    this.movePlayer(
       ...this.calculateDistanceFromCenter(event.clientX, event.clientY)
     )
   }
 
   private onTouchStart(event: TouchEvent) {
-    this.game.movePlayer(
+    this.movePlayer(
       ...this.calculateDistanceFromCenter(event.touches[0].clientX, event.touches[0].clientY)
     )
   }
 
   private onTouchEnd() {
-    this.game.stopPlayer()
+    this.endMovePlayer()
   }
 
   private calculateDistanceFromCenter(x: number, y: number): [number, number] {
@@ -112,13 +126,13 @@ export class App {
 
   private updateKeys() {
     if (this.keys.length === 0) {
-      this.game.stopPlayer()
+      this.endMovePlayer()
       return
     }
     const sum = this.keys.reduce((sum, key) => {
       return [sum[0] + App.KEY_TO_DIRECTION[key][0], sum[1] + App.KEY_TO_DIRECTION[key][1]]
     }, [0, 0])
-    this.game.movePlayer(sum[0], sum[1])
+    this.movePlayer(sum[0], sum[1])
   }
 
   static KEY_TO_DIRECTION: { [key: string]: [number, number] } = {
