@@ -21,6 +21,8 @@ export default class Game {
   targetPoint?: TargetPoint = undefined
   mobiles: Mobile[] = []
   gameLevel = new GameLevel(this)
+  pausedTitle?: string = undefined
+  pausedSubtitle?: string = undefined
 
   constructor(
     private context: CanvasRenderingContext2D,
@@ -35,13 +37,36 @@ export default class Game {
   }
 
   animate(time: number) {
-    if (this.paused) return
+    if (this.paused) {
+      this.renderPauseMessage()
+      return
+    }
+
     this.updateDelta(time)
     this.updateGameLevel()
     this.updateNonPlayerMobiles()
     this.updatePlayer()
     this.context.restore()
     this.processGameOver()
+  }
+
+  renderPauseMessage() {
+    if (!this.pausedTitle) return
+    this.context.save()
+    this.context.fillStyle = "white"
+    this.context.font = "48px Courier"
+    this.context.textAlign = "center"
+    const text = this.pausedTitle
+    this.context.fillText(text, this.width / 2, this.height / 2)
+    this.context.restore()
+    if (!this.pausedSubtitle) return
+    this.context.save()
+    this.context.fillStyle = "white"
+    this.context.font = "16px Courier"
+    this.context.textAlign = "center"
+    const subtitle = this.pausedSubtitle
+    this.context.fillText(subtitle, this.width / 2, this.height / 2 + 48)
+    this.context.restore()
   }
 
   movePlayer(x: number, y: number) {
@@ -82,7 +107,9 @@ export default class Game {
     this.player?.enemies.add(enemy)
   }
 
-  pause() {
+  pause(title?: string, subtitle?: string) {
+    this.pausedTitle = title
+    this.pausedSubtitle = subtitle
     this.paused = true
   }
 
@@ -102,7 +129,7 @@ export default class Game {
 
   private processGameOver() {
     if (this.player?.isAlive) return
-    this.pause()
+    this.pause("Game Over", "Press any key to restart")
   }
 
   private updatePlayer() {
