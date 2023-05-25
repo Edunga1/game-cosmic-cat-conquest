@@ -129,7 +129,7 @@ export default class Game {
 
   private processGameOver() {
     if (this.player?.isAlive) return
-    this.pause("Game Over", "Press any key to restart")
+    this.pause("GAME OVER", "Press any key to restart")
   }
 
   private updatePlayer() {

@@ -32,7 +32,7 @@ export class App {
     this.game.options.showCoordinates = true
     setInterval(() => {
       console.log(this.game.getSummary())
-    }, 5000)
+    }, 3000)
     return this
   }
 
