@@ -11,6 +11,7 @@ export default class CirclingTriangle extends Mobile {
     this.attributes.power = 5
     this.attributes.size = 1
     this.speed = .5
+    this.fame = 1
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

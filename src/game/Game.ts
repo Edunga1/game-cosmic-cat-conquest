@@ -92,6 +92,7 @@ export default class Game {
       Player:
         * pos: ${this.player?.position.x}, ${this.player?.position.y}
         * hp : ${this.player?.attributes.hp.value} / ${this.player?.attributes.hp.max}
+        * score: ${this.player?.score}
       Mobiles: ${this.mobiles?.length}
     `
   }
@@ -104,6 +105,7 @@ export default class Game {
 
     enemy.position = this.player?.position.around(Math.random() * 200 + 400)
     enemy.enemies.add(this.player)
+    enemy.onDeath = this.scoreToPlayer.bind(this)
     this.player?.enemies.add(enemy)
   }
 
@@ -189,5 +191,9 @@ export default class Game {
     const text = `${Math.round(mobile.position.x)}, ${Math.round(mobile.position.y)}`
     const left = text.length / 4 * size
     this.context.fillText(text, -left, margin)
+  }
+
+  private scoreToPlayer(mobile: Mobile) {
+    this.player?.scoreByMobile(mobile)
   }
 }

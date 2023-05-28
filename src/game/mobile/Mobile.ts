@@ -14,11 +14,15 @@ export default abstract class Mobile implements IMobileAddedObservable {
   lifetime = 0
   maxLifetime = Infinity
   isLiving = true
-  onLifetimeEnd?: () => void
   attributes = new Attributes()
   lastAttack = 0
   isAlive = true
+  score = 0
+  fame = 0
   enemies: MobileCollection = new MobileCollection()
+
+  onLifetimeEnd?: () => void
+  onDeath?: (mobile: Mobile) => void
 
   constructor(
     protected context: CanvasRenderingContext2D,
@@ -81,6 +85,10 @@ export default abstract class Mobile implements IMobileAddedObservable {
     return this.enemies.includes(mobile)
   }
 
+  scoreByMobile(mobile: Mobile) {
+    this.score += mobile.fame
+  }
+
   private updateEssentials(delta: number) {
     this.lifetime += delta
     this.lastAttack += delta
@@ -94,8 +102,13 @@ export default abstract class Mobile implements IMobileAddedObservable {
   private damage(damage: number) {
     this.attributes.hp.value -= damage
     if (this.attributes.hp.value <= 0) {
-      this.isAlive = false
+      this.die()
     }
+  }
+
+  private die() {
+    this.isAlive = false
+    this.onDeath?.(this)
   }
 
   protected checkLifetimeEnd(): boolean {
