@@ -37,6 +37,9 @@ export default class Game {
   }
 
   animate(time: number) {
+    this.renderSpace()
+    this.renderInterface()
+
     if (this.paused) {
       this.renderPauseMessage()
       return
@@ -46,27 +49,7 @@ export default class Game {
     this.updateGameLevel()
     this.updateNonPlayerMobiles()
     this.updatePlayer()
-    this.context.restore()
     this.processGameOver()
-  }
-
-  renderPauseMessage() {
-    if (!this.pausedTitle) return
-    this.context.save()
-    this.context.fillStyle = "white"
-    this.context.font = "48px Courier"
-    this.context.textAlign = "center"
-    const text = this.pausedTitle
-    this.context.fillText(text, this.width / 2, this.height / 2)
-    this.context.restore()
-    if (!this.pausedSubtitle) return
-    this.context.save()
-    this.context.fillStyle = "white"
-    this.context.font = "16px Courier"
-    this.context.textAlign = "center"
-    const subtitle = this.pausedSubtitle
-    this.context.fillText(subtitle, this.width / 2, this.height / 2 + 48)
-    this.context.restore()
   }
 
   movePlayer(x: number, y: number) {
@@ -145,9 +128,6 @@ export default class Game {
   }
 
   private updateNonPlayerMobiles() {
-    if (this.space) {
-      this.space.animate(this.delta)
-    }
     const aliveMobiles = this.mobiles.filter(mobile => mobile.isAlive)
     const axis = this.player?.position || new Point(0, 0)
     aliveMobiles.forEach(enemy => {
@@ -195,5 +175,38 @@ export default class Game {
 
   private scoreToPlayer(mobile: Mobile) {
     this.player?.scoreByMobile(mobile)
+  }
+
+  private renderSpace() {
+    if (!this.space) return
+    this.space.animate(this.delta)
+  }
+
+  private renderInterface() {
+    if (!this.player) return
+    this.context.save()
+    this.context.fillStyle = "white"
+    this.context.font = "16px Courier"
+    this.context.fillText(this.player.score.toString(), this.width / 2, 20)
+    this.context.restore()
+  }
+
+  private renderPauseMessage() {
+    if (!this.pausedTitle) return
+    this.context.save()
+    this.context.fillStyle = "white"
+    this.context.font = "48px Courier"
+    this.context.textAlign = "center"
+    const text = this.pausedTitle
+    this.context.fillText(text, this.width / 2, this.height / 2)
+    this.context.restore()
+    if (!this.pausedSubtitle) return
+    this.context.save()
+    this.context.fillStyle = "white"
+    this.context.font = "16px Courier"
+    this.context.textAlign = "center"
+    const subtitle = this.pausedSubtitle
+    this.context.fillText(subtitle, this.width / 2, this.height / 2 + 48)
+    this.context.restore()
   }
 }
