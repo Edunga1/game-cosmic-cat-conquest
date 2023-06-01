@@ -12,7 +12,7 @@ export default class ConfettiEffect extends SpriteEffectBase {
     super(context, sprite)
   }
 
-  protected render(delta: number): void {
+  render(delta: number): void {
     this.context.save()
     const gap = this.direction.unit().multiply(30)
     this.context.translate(gap.x, gap.y)

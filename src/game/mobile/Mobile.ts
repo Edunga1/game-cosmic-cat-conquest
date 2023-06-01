@@ -27,11 +27,14 @@ export default abstract class Mobile implements IMobileAddedObservable {
   constructor(
     protected context: CanvasRenderingContext2D,
   ) { }
-  animate(delta: number) {
+
+  update(delta: number) {
     this.updateEssentials(delta)
-    this.update(delta)
-    this.render(delta)
+    this.afterUpdate()
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  render(_delta: number) { /** implement in child */ }
 
   move(distance: Point) {
     this.velocity = distance.limit(this.speed)
@@ -89,10 +92,25 @@ export default abstract class Mobile implements IMobileAddedObservable {
     this.score += mobile.fame
   }
 
+  addObserver(observer: IMobileAddedObserver): void {
+    this.observers.push(observer)
+  }
+
+  notifyMobileAdded(mobile: Mobile): void {
+    this.observers.forEach(observer => observer.onMobileAdded(mobile))
+  }
+
+  protected checkLifetimeEnd(): boolean {
+    return this.lifetime > this.maxLifetime
+  }
+
+  protected afterUpdate() { /** implement in child */ }
+
   private updateEssentials(delta: number) {
     this.lifetime += delta
     this.lastAttack += delta
     this.position = this.position.add(this.velocity.multiply(delta / 5))
+
     // notify when lifetime is over
     if (this.checkLifetimeEnd()) {
       this.onLifetimeEnd?.()
@@ -110,21 +128,4 @@ export default abstract class Mobile implements IMobileAddedObservable {
     this.isAlive = false
     this.onDeath?.(this)
   }
-
-  protected checkLifetimeEnd(): boolean {
-    return this.lifetime > this.maxLifetime
-  }
-
-  addObserver(observer: IMobileAddedObserver): void {
-    this.observers.push(observer)
-  }
-
-  notifyMobileAdded(mobile: Mobile): void {
-    this.observers.forEach(observer => observer.onMobileAdded(mobile))
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected update(_: number): void { /* empty */ }
-
-  protected abstract render(delta: number): void
 }

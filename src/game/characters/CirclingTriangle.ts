@@ -14,15 +14,6 @@ export default class CirclingTriangle extends Mobile {
     this.fame = 1
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected update(_: number): void {
-    if (this.enemies.first === null) {
-      return
-    }
-    this.moveToMobile(this.enemies.first)
-    this.attack([this.enemies.first])
-  }
-
   render(): void {
     this.context.save()
     this.context.rotate(this.direction.angle() + Math.PI / 2)
@@ -48,5 +39,11 @@ export default class CirclingTriangle extends Mobile {
     this.context.fillStyle = `rgba(255, 255, 255, ${this.lastAttack / 200})`
     this.context.fill()
     this.context.restore()
+  }
+
+  protected afterUpdate(): void {
+    if (this.enemies.first === undefined) return
+    this.moveToMobile(this.enemies.first)
+    this.attack([this.enemies.first])
   }
 }

@@ -36,7 +36,7 @@ export default class Game {
     this.space?.resize(width, height)
   }
 
-  animate(time: number) {
+  animate(delta: number) {
     this.renderSpace()
     this.renderInterface()
 
@@ -45,11 +45,14 @@ export default class Game {
       return
     }
 
-    this.updateDelta(time)
+    this.updateDelta(delta)
     this.updateGameLevel()
-    this.updateNonPlayerMobiles()
     this.updatePlayer()
+    this.updateMobiles()
     this.processGameOver()
+
+    this.renderMobiles()
+    this.renderPlayer()
   }
 
   movePlayer(x: number, y: number) {
@@ -118,16 +121,24 @@ export default class Game {
   }
 
   private updatePlayer() {
+    this.player?.update(this.delta)
+  }
+
+  private renderPlayer() {
     this.context.save()
     this.context.translate(this.width / 2, this.height / 2)
     if (this.player) {
-      this.player.animate(this.delta)
+      this.player.render(this.delta)
       this.drawCoordinates(this.player, 20)
     }
     this.context.restore()
   }
 
-  private updateNonPlayerMobiles() {
+  private updateMobiles() {
+    this.mobiles.forEach(mobile => mobile.update(this.delta))
+  }
+
+  private renderMobiles() {
     const aliveMobiles = this.mobiles.filter(mobile => mobile.isAlive)
     const axis = this.player?.position || new Point(0, 0)
     aliveMobiles.forEach(enemy => {
@@ -136,7 +147,7 @@ export default class Game {
         this.width / 2 - axis.x + enemy.position.x,
         this.height / 2 - axis.y + enemy.position.y,
       )
-      enemy.animate(this.delta)
+      enemy.render(this.delta)
       this.drawCoordinates(enemy, 10, 5)
       this.context.restore()
     })

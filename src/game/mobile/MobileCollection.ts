@@ -8,7 +8,7 @@ export default class MobileCollection {
     return this.collection.filter(mobile => mobile.isAlive).length
   }
 
-  get first(): Mobile | null {
+  get first(): Mobile | undefined {
     return this.collection[0]
   }
 
