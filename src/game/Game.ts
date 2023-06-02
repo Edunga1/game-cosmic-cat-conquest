@@ -47,12 +47,10 @@ export default class Game {
 
     this.updateDelta(delta)
     this.updateGameLevel()
-    this.updatePlayer()
     this.updateMobiles()
     this.processGameOver()
 
     this.renderMobiles()
-    this.renderPlayer()
   }
 
   movePlayer(x: number, y: number) {
@@ -110,6 +108,7 @@ export default class Game {
     this.space = new Space(this.context)
     this.space.resize(this.width, this.height)
     this.player = new Cat(this.context)
+    this.mobiles.push(this.player)
     this.targetPoint = new TargetPoint(this.context, this.player)
     this.mobiles.push(this.targetPoint)
     this.resume()
@@ -120,16 +119,11 @@ export default class Game {
     this.pause("GAME OVER", "Press any key to restart")
   }
 
-  private updatePlayer() {
-    this.player?.update(this.delta)
-  }
-
   private renderPlayer() {
     this.context.save()
     this.context.translate(this.width / 2, this.height / 2)
     if (this.player) {
       this.player.render(this.delta)
-      this.drawCoordinates(this.player, 20)
     }
     this.context.restore()
   }
@@ -148,7 +142,7 @@ export default class Game {
         this.height / 2 - axis.y + enemy.position.y,
       )
       enemy.render(this.delta)
-      this.drawCoordinates(enemy, 10, 5)
+      this.drawCoordinates(enemy)
       this.context.restore()
     })
   }
@@ -173,15 +167,16 @@ export default class Game {
     this.mobiles.push(effect)
   }
 
-  private drawCoordinates(mobile: Mobile, margin: number, size = 8) {
+  private drawCoordinates(mobile: Mobile) {
     if (!this.options.showCoordinates || !mobile.isLiving) {
       return
     }
+    const size = mobile.attributes.size
     this.context.fillStyle = "white"
     this.context.font = `${size}px Arial`
     const text = `${Math.round(mobile.position.x)}, ${Math.round(mobile.position.y)}`
     const left = text.length / 4 * size
-    this.context.fillText(text, -left, margin)
+    this.context.fillText(text, -left, size * 2)
   }
 
   private scoreToPlayer(mobile: Mobile) {

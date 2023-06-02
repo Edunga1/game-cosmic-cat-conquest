@@ -9,7 +9,7 @@ export default class CirclingTriangle extends Mobile {
 
     this.attributes.hp.max = 5
     this.attributes.power = 5
-    this.attributes.size = 1
+    this.attributes.size = 5
     this.speed = .5
     this.fame = 1
   }
