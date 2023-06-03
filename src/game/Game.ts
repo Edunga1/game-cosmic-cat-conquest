@@ -171,7 +171,7 @@ export default class Game {
     if (!this.options.showCoordinates || !mobile.isLiving) {
       return
     }
-    const size = mobile.attributes.size
+    const size = mobile.appearanceSize
     this.context.fillStyle = "white"
     this.context.font = `${size}px Arial`
     const text = `${Math.round(mobile.position.x)}, ${Math.round(mobile.position.y)}`

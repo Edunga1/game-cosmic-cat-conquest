@@ -29,6 +29,7 @@ export default class Cat extends Mobile {
     this.attributes.range.value = 50
     this.attributes.range.max = 50
     this.attributes.attackPeriod = 0
+    this.appearanceSize = 10
 
     Cat.SPRITES.forEach(({ mode, img, width, height, fps }) => {
       const image = new Image()

@@ -19,6 +19,7 @@ export default abstract class Mobile implements IMobileAddedObservable {
   isAlive = true
   score = 0
   fame = 0
+  appearanceSize = 1
   enemies: MobileCollection = new MobileCollection()
 
   onLifetimeEnd?: () => void
