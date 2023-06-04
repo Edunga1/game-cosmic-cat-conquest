@@ -88,7 +88,8 @@ export default class Game {
 
     mobile.position = this.player?.position.around(Math.random() * 200 + 400)
     mobile.enemies.add(this.player)
-    mobile.onDeath = this.scoreToPlayer.bind(this)
+    mobile.onDeath.push(this.scoreToPlayer.bind(this))
+    mobile.onDeath.push(this.addStarToSpace.bind(this))
     this.player?.enemies.add(mobile)
   }
 
@@ -180,6 +181,10 @@ export default class Game {
 
   private scoreToPlayer(mobile: Mobile) {
     this.player?.scoreByMobile(mobile)
+  }
+
+  private addStarToSpace() {
+    this.space?.createStar()
   }
 
   private renderSpace() {

@@ -5,13 +5,16 @@ export default class Space {
   height = 0
   starElapsed = 0
   backgroundColor = "rgb(10, 10, 10)"
-  starColorRange = 100
   stars: Point[] = []
+  initialStars = 100
   maxStars = 400
 
   constructor(
     private context: CanvasRenderingContext2D
   ) {
+    for (let i = 0; i < this.initialStars; i++) {
+      this.createStar()
+    }
   }
 
   animate(delta: number) {
@@ -21,6 +24,17 @@ export default class Space {
   resize(width: number, height: number) {
     this.width = width
     this.height = height
+    this.stars.forEach(star => {
+      star.x = Math.random() * width
+      star.y = Math.random() * height
+    })
+  }
+
+  createStar() {
+    this.stars.push(new Point(
+      Math.random() * this.width,
+      Math.random() * this.height,
+    ))
   }
 
   private render(delta: number) {
@@ -28,7 +42,7 @@ export default class Space {
     this.renderStars()
 
     if (this.checkStarElapsed(delta)) {
-      this.updateStars()
+      this.updateStars(delta)
     }
   }
 
@@ -44,14 +58,11 @@ export default class Space {
     })
   }
 
-  private updateStars() {
-    this.stars = []
-    for (let i = 0; i < this.maxStars; i++) {
-      this.stars.push(new Point(
-        Math.random() * this.width,
-        Math.random() * this.height,
-      ))
-    }
+  private updateStars(delta: number) {
+    this.stars.forEach(star => {
+      star.x += (Math.random() - .5) * delta
+      star.y += (Math.random() - .5) * delta
+    })
   }
 
   private checkStarElapsed(delta: number) {

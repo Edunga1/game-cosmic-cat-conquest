@@ -23,7 +23,7 @@ export default abstract class Mobile implements IMobileAddedObservable {
   enemies: MobileCollection = new MobileCollection()
 
   onLifetimeEnd?: () => void
-  onDeath?: (mobile: Mobile) => void
+  onDeath: ((mobile: Mobile) => void)[] = []
 
   constructor(
     protected context: CanvasRenderingContext2D,
@@ -127,6 +127,6 @@ export default abstract class Mobile implements IMobileAddedObservable {
 
   private die() {
     this.isAlive = false
-    this.onDeath?.(this)
+    this.onDeath.forEach(callback => callback(this))
   }
 }
