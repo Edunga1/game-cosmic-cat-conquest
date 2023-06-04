@@ -13,7 +13,7 @@ export default class Game {
   }
   width = 0
   height = 0
-  lastTime = 0
+  lifeTime = 0
   delta = 0
   paused = false
   space?: Space = undefined
@@ -25,7 +25,7 @@ export default class Game {
   pausedSubtitle?: string = undefined
 
   constructor(
-    private context: CanvasRenderingContext2D,
+    public context: CanvasRenderingContext2D,
   ) {
     this.reset()
   }
@@ -36,7 +36,7 @@ export default class Game {
     this.space?.resize(width, height)
   }
 
-  animate(delta: number) {
+  animate(time: number) {
     this.renderSpace()
     this.renderInterface()
 
@@ -45,7 +45,7 @@ export default class Game {
       return
     }
 
-    this.updateDelta(delta)
+    this.updateDelta(time)
     this.updateGameLevel()
     this.updateMobiles()
     this.processGameOver()
@@ -81,16 +81,15 @@ export default class Game {
     `
   }
 
-  createEnemy() {
-    const enemy = new CirclingTriangle(this.context)
-    this.mobiles.push(enemy)
+  createEnemy(mobile: Mobile) {
+    this.mobiles.push(mobile)
 
     if (!this.player) return
 
-    enemy.position = this.player?.position.around(Math.random() * 200 + 400)
-    enemy.enemies.add(this.player)
-    enemy.onDeath = this.scoreToPlayer.bind(this)
-    this.player?.enemies.add(enemy)
+    mobile.position = this.player?.position.around(Math.random() * 200 + 400)
+    mobile.enemies.add(this.player)
+    mobile.onDeath = this.scoreToPlayer.bind(this)
+    this.player?.enemies.add(mobile)
   }
 
   pause(title?: string, subtitle?: string) {
@@ -152,8 +151,8 @@ export default class Game {
   }
 
   private updateDelta(time: number) {
-    this.delta = time - this.lastTime
-    this.lastTime = time
+    this.delta = time - this.lifeTime
+    this.lifeTime = time
   }
 
   private createCatAttackEffect() {

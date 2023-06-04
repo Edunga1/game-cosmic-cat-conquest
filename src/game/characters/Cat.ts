@@ -23,7 +23,7 @@ export default class Cat extends Mobile {
   ) {
     super(context)
 
-    this.attributes.hp.max = 20
+    this.attributes.hp.max = 50
     this.attributes.power = 5
     this.attributes.size = 10
     this.attributes.range.value = 50
