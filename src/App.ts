@@ -25,7 +25,7 @@ export class App {
     window.addEventListener("resize", this.resize.bind(this))
     this.registerCanvasEvents()
     this.resize()
-    this.animate()
+    requestAnimationFrame(this.animate.bind(this))
   }
 
   enableDebugMode(): App {
@@ -36,8 +36,8 @@ export class App {
     return this
   }
 
-  private animate(delta = 0) {
-    this.game.animate(delta)
+  private animate(timestamp: number) {
+    this.game.animate(timestamp)
     requestAnimationFrame(this.animate.bind(this))
   }
 
