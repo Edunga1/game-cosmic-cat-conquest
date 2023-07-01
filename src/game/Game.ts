@@ -1,5 +1,4 @@
 import Cat from "./characters/Cat"
-import CirclingTriangle from "./characters/CirclingTriangle"
 import TargetPoint from "./characters/TargetPoint"
 import Point from "./core/math/Point"
 import ConfettiEffect from "./effects/ConfettiEffect"
@@ -117,15 +116,6 @@ export default class Game {
   private processGameOver() {
     if (this.player?.isAlive) return
     this.pause("GAME OVER", "Press any key to restart")
-  }
-
-  private renderPlayer() {
-    this.context.save()
-    this.context.translate(this.width / 2, this.height / 2)
-    if (this.player) {
-      this.player.render(this.delta)
-    }
-    this.context.restore()
   }
 
   private updateMobiles() {
