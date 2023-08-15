@@ -25,11 +25,11 @@ export class App {
     window.addEventListener("resize", this.resize.bind(this))
     this.registerCanvasEvents()
     this.resize()
+    this.registerConsoleCommands()
     requestAnimationFrame(this.animate.bind(this))
   }
 
   enableDebugMode(): App {
-    this.game.options.showCoordinates = true
     setInterval(() => {
       console.log(this.game.getSummary())
     }, 3000)
@@ -59,6 +59,26 @@ export class App {
     this.canvas.addEventListener("touchend", this.onTouchEnd.bind(this))
     document.addEventListener("keydown", this.onKeyDown.bind(this))
     document.addEventListener("keyup", this.onKeyUp.bind(this))
+  }
+
+  private registerConsoleCommands() {
+    const commands: Record<string, () => void> = {
+      "toggle coordinates": () => {
+        this.game.options.showCoordinates = !this.game.options.showCoordinates
+      }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.run = (command: string) => {
+      const key = Object.keys(commands).find(key => key.startsWith(command))
+      if (!key) {
+        console.log("No command found")
+        return
+      }
+      console.log(`Executed: ${key}`)
+      commands[key]()
+    }
   }
 
   private movePlayer(x: number, y: number) {
