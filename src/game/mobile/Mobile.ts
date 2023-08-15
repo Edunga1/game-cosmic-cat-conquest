@@ -1,12 +1,8 @@
 import Point from "../core/math/Point"
 import Attributes from "./Attributes"
-import IMobileAddedObservable from "./IMobileAddedObservable"
-import IMobileAddedObserver from "./IMobileAddedObserver"
 import MobileCollection from "./MobileCollection"
 
-export default abstract class Mobile implements IMobileAddedObservable {
-  observers: IMobileAddedObserver[] = []
-
+export default abstract class Mobile {
   position = Point.zero()
   velocity = Point.zero()
   speed = 1
@@ -91,14 +87,6 @@ export default abstract class Mobile implements IMobileAddedObservable {
 
   scoreByMobile(mobile: Mobile) {
     this.score += mobile.fame
-  }
-
-  addObserver(observer: IMobileAddedObserver): void {
-    this.observers.push(observer)
-  }
-
-  notifyMobileAdded(mobile: Mobile): void {
-    this.observers.forEach(observer => observer.onMobileAdded(mobile))
   }
 
   protected checkLifetimeEnd(): boolean {
