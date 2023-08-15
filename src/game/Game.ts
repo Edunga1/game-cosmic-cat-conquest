@@ -36,6 +36,7 @@ export default class Game {
   }
 
   animate(time: number) {
+    this.updateDelta(time)
     this.renderSpace()
     this.renderInterface()
 
@@ -44,7 +45,6 @@ export default class Game {
       return
     }
 
-    this.updateDelta(time)
     this.updateGameLevel()
     this.updateMobiles()
     this.processGameOver()
