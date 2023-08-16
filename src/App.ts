@@ -63,7 +63,7 @@ export class App {
 
   private registerConsoleCommands() {
     const commands: Record<string, () => void> = {
-      "toggle coordinates": () => {
+      "coordinates": () => {
         this.game.options.showCoordinates = !this.game.options.showCoordinates
       }
     }
